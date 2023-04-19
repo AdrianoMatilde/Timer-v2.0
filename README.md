@@ -1,5 +1,6 @@
 # Timer-v2.0
-Temporizador versão 2.0
+Timer utilizando HTML, JavaScript e CSS embutido na pagina.
+Temporizador versão 2.0 (versão melhorada)
 
 ---
 
@@ -23,3 +24,4 @@ Quando o temporizador chega a zero, a página pisca com uma cor de fundo vermelh
 ---
 
 Espero que tenha gostado!
+Se tiver mais alguma ideia não deixe de contribuir.
