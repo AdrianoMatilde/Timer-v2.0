@@ -1,0 +1,174 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <meta charset="UTF-8">
+    <title>Timer</title>
+    <style>
+      body {
+        font-family: Arial, sans-serif;
+        text-align: center;
+      }
+      h1 {
+        font-size: 36px;
+        margin-top: 30px;
+      }
+      #timer {
+        font-size: 72px;
+        margin-top: 50px;
+      }
+      #copy {
+        position: absolute;
+        bottom: 0;
+        color: #181717;
+        width: 100%;
+        height: 100px;
+        text-align: center;
+        line-height: 100px;
+        font-family: Georgia, 'Times New Roman', Times, serif;
+      }
+      #tx {
+        text-align: center;
+        font-family: Georgia, 'Times New Roman', Times, serif;
+      }
+      input {
+        width: 50px;
+        text-align: center;
+        margin: 20px;
+      }
+      button {
+
+        background-color: #008cba;
+        color: #fff;
+        margin: 20px auto;
+        padding: 10px 20px;
+        font-size: 20px;
+        background-color: #008cba;
+        color: #fff;
+        border: none;
+        border-radius: 5px;
+        cursor: pointer;
+      }
+    </style>
+  </head>
+  <body>
+    <h1>Timer</h1>
+      <p id="tx">Produtividade e eficiência</p>
+    <div>
+      <button onclick="increase('hours')">+</button>
+      <input type="number" id="hours" min="0" max="23" value="0">
+      <button onclick="decrease('hours')">-</button>
+      <span>:</span>
+      <button onclick="increase('minutes')">+</button>
+      <input type="number" id="minutes" min="0" max="59" value="0">
+      <button onclick="decrease('minutes')">-</button>
+      <span>:</span>
+      <button onclick="increase('seconds')">+</button>
+      <input type="number" id="seconds" min="0" max="59" value="0">
+      <button onclick="decrease('seconds')">-</button>
+      <p id="copy">By Adriano Silva</p>
+    </div>
+    <button onclick="startTimer()">Iniciar</button>
+    <button onclick="stopTimer()">Parar</button>
+    <button onclick="resetTimer()">Reiniciar</button>
+    <div id="timer">00:00:00</div>
+
+    <script>
+      var hours = 0;
+      var minutes = 0;
+      var seconds = 0;
+      var timer;
+      var blinking;
+
+      function startTimer() {
+        if (timer) {
+          return;
+        }
+        hours = document.getElementById("hours").value;
+        minutes = document.getElementById("minutes").value;
+        seconds = document.getElementById("seconds").value;
+        if (hours == 0 && minutes == 0 && seconds == 0) {
+          return;
+        }
+        timer = setInterval(countDown, 1000);
+        updateTimer();
+      }
+
+      function stopTimer() {
+        clearInterval(timer);
+        timer = null;
+      }
+
+      function resetTimer() {
+        stopTimer();
+        hours = 0;
+        minutes = 0;
+        seconds = 0;
+        blinking = false;
+        updateTimer();
+      }
+
+      function countDown() {
+        if (seconds == 0) {
+          if (minutes == 0) {
+            if (hours == 0) {
+              clearInterval(timer);
+              blinkScreen();
+              return;
+            }
+            hours--;
+            minutes = 59;
+            seconds = 59;
+          } else {
+            minutes--;
+            seconds = 59;
+          }
+        } else {
+          seconds--;
+        }
+        updateTimer();
+      }
+
+      function updateTimer() {
+        var timerElement = document.getElementById("timer");
+        var hoursString = hours.toString().padStart(2, "0");
+        var minutesString = minutes.toString().padStart(2, "0");
+        var secondsString = seconds.toString().padStart(2, "0");
+        timerElement.innerText = hoursString + ":" + minutesString + ":" + secondsString;
+      }
+
+      function blinkScreen() {
+        if (blinking) {
+         return;
+        }
+        blinking = true;
+        var bodyElement = document.getElementsByTagName("body")[0];
+        var interval = setInterval(function() {
+          bodyElement.style.backgroundColor = bodyElement.style.backgroundColor == "red" ? "white" : "red";
+        }, 500);
+        setTimeout(function() {
+          clearInterval(interval);
+          bodyElement.style.backgroundColor = "white";
+          blinking = false;
+        }, 3000);
+      }
+
+      function increase(unit) {
+        var input = document.getElementById(unit);
+        var value = parseInt(input.value);
+        if (value == parseInt(input.max)) {
+         return;
+        }
+        input.value = value + 1;
+      }
+
+      function decrease(unit) {
+        var input = document.getElementById(unit);
+        var value = parseInt(input.value);
+        if (value == parseInt(input.min)) {
+         return;
+        }
+        input.value = value - 1;
+      }
+    </script>
+  </body>
+</html>
